@@ -11,7 +11,7 @@ class AgentState(TypedDict):
 
 def name_node(state : AgentState) -> AgentState:
     """This function accepst the name of the user as input"""
-    return {'r' : f"{state['age']}, welcome to the system!"}
+    return {'r' : f"{state['name']}, welcome to the system!"}
 
 def age_node(state : AgentState) -> AgentState:
     """This function accepst the age of the user as input"""
@@ -34,8 +34,10 @@ graph.set_finish_point("skills")
 
 app = graph.compile()
 
-png_data = app.get_graph().draw_mermaid_png()
+"""png_data = app.get_graph().draw_mermaid_png()
 image = Image.open(io.BytesIO(png_data))
-image.show()
+image.show()"""
 
 answer = app.invoke({'name' : "Linda", 'age' : 23, 'skills' : "Python, Machine Learning, LangGraph, and AI Agents"})
+
+print(answer['r'])
