@@ -37,3 +37,5 @@ app = graph.compile()
 png_data = app.get_graph().draw_mermaid_png()
 image = Image.open(io.BytesIO(png_data))
 image.show()
+
+answer = app.invoke({'name' : "Linda", 'age' : 23, 'skills' : "Python, Machine Learning, LangGraph, and AI Agents"})
