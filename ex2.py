@@ -31,7 +31,7 @@ graph.set_finish_point("conditional") # 6. Add end
 
 app = graph.compile() # 7. Compie graph 
 
-answer = app.invoke({'vals': [1,2,3,4], 'name': "Jack Sparrow", 'op': "*"}) # 8. Run app
+answer = app.invoke({'vals': [1,2,3,4], 'name': "Jack Sparrow", 'op': "+"}) # 8. Run app
 
 print(answer['result'])
 
