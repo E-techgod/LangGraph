@@ -54,3 +54,6 @@ png_data = app.get_graph().draw_mermaid_png()
 image = Image.open(io.BytesIO(png_data))
 image.show()
 
+answer = app.invoke({'num1' : 2, 'num2' : 5, 'operation' : "+"})
+
+print(answer['finalNum'])
