@@ -8,11 +8,11 @@ class AgentState(TypedDict): # 1. Create state
 
 def first_node(state : AgentState) -> AgentState:
     """This is the first node of our sequence"""
-    return {state['result']: f"Hi {state['name']}"}
+    return {'result': f"Hi {state['name']}"}
 
 def second_node(state : AgentState) -> AgentState:
     """This is the second node of our sequence"""
-    return {state['result'] : state['result'] + f". You are {state['age']} years old"}
+    return {'result' : state['result'] + f". You are {state['age']} years old"}
 
 graph = StateGraph(AgentState)
 
