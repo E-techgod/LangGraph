@@ -24,6 +24,8 @@ def skills_node(state : AgentState) -> AgentState:
 graph = StateGraph(AgentState)
 
 graph.add_node("name", name_node)
+graph.add_node("age", age_node)
+graph.add_node("skills", skills_node)
 
 graph.set_entry_point("name")
 graph.add_edge("name", "age")
