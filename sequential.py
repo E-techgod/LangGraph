@@ -1,4 +1,6 @@
-from typing import Dict, TypedDict, List
+import io
+from PIL import Image
+from typing import TypedDict
 from langgraph.graph import StateGraph
 
 class AgentState(TypedDict): # 1. Create state
@@ -25,8 +27,9 @@ graph.set_finish_point("second_node")
 
 app = graph.compile()
 
-from IPython.display import Image, display
-display(Image(app.get_graph().draw_mermaid_png()))
+png_data = app.get_graph().draw_mermaid_png()
+image = Image.open(io.BytesIO(png_data))
+image.show()
 
 result = app.invoke({"name" : "Chalry", "age" : "23"})
 
