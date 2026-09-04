@@ -1,5 +1,4 @@
 import io
-from traceback import print_tb
 from PIL import Image
 from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
@@ -31,15 +30,17 @@ def decision_router_node(state : AgentState) -> AgentState:
         return "addition_operation" # Edge 
     elif state['op1'] == "-":
         return "subtraction_operation" # Edge 
+    else:
+        return None
 
 # Second part of the graph's nodes
 def addition_node2(state : AgentState) -> AgentState:
     """ This node will add the first numbers """
-    return {'fnum2' : state['num3'] + state['num4']}
+    return {'fnum2' : state['fnum1'] + state['num3'] + state['num4']}
 
 def subtraction_node2(state : AgentState) -> AgentState:
     """ This node will subtract the first numbers """
-    return {'fnum2' : state['num3'] - state['num4']}
+    return {'fnum2' : state['fnum1'] - state['num3'] - state['num4']}
 
 def decision_router_node2(state : AgentState) -> AgentState:
     """ This node will decide which operation to perform """
@@ -47,6 +48,8 @@ def decision_router_node2(state : AgentState) -> AgentState:
         return "addition_operation2" # Edge 
     elif state['op2'] == "-":
         return "subtraction_operation2" # Edge 
+    else: 
+        return None
     
 graph = StateGraph(AgentState)
 
@@ -97,7 +100,7 @@ png_data = app.get_graph().draw_mermaid_png()
 image = Image.open(io.BytesIO(png_data))
 image.show()
 
-answer = app.invoke({'num1' : 10, 'op1' : "-", 'num2' : 5, 'num3' : 7, 'num4' : 2, 'op2' : "+"})
+answer = app.invoke({'num1' : 10, 'num2' : 5, 'num3' : 7, 'num4' : 2, 'op1' : "-", 'op2' : "+"})
 
 print(answer['fnum1'])
 print(answer['fnum2'])
