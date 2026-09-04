@@ -19,11 +19,11 @@ class AgentState(TypedDict):
 # First part of the graph's nodes
 def addition_node(state : AgentState) -> AgentState:
     """ This node will add the first numbers """
-    return {'fnum1' : state['num1'] + state['num2'] + state['num3'] + state['num4']}
+    return {'fnum1' : state['num1'] + state['num2']}
 
 def subtraction_node(state : AgentState) -> AgentState:
     """ This node will subtract the first numbers """
-    return {'fnum1' : state['num1'] - state['num2'] - state['num3'] - state['num4']}
+    return {'fnum1' : state['num1'] - state['num2']}
 
 def decision_router_node(state : AgentState) -> AgentState:
     """ This node will decide which operation to perform """
@@ -35,11 +35,11 @@ def decision_router_node(state : AgentState) -> AgentState:
 # Second part of the graph's nodes
 def addition_node2(state : AgentState) -> AgentState:
     """ This node will add the first numbers """
-    return {'fnum2' : state['num1'] + state['num2'] + state['num3'] + state['num4']}
+    return {'fnum2' : state['num3'] + state['num4']}
 
 def subtraction_node2(state : AgentState) -> AgentState:
     """ This node will subtract the first numbers """
-    return {'fnum2' : state['num1'] - state['num2'] - state['num3'] - state['num4']}
+    return {'fnum2' : state['num3'] - state['num4']}
 
 def decision_router_node2(state : AgentState) -> AgentState:
     """ This node will decide which operation to perform """
