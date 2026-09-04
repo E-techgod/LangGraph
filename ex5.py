@@ -8,7 +8,7 @@ class AgentState(TypedDict):
     name : str
     guesses : List[int]
     attempts : int
-    taregt : int
+    target : int
     hint : int
     lower_bound : int
     upper_bound : int
@@ -44,7 +44,7 @@ def guess_node(state: AgentState) -> AgentState:
 def hint_node(state: AgentState) -> AgentState:
     """Here we provide a hint based on the last guess and update the bounds"""
     latest_guess = state["guesses"][-1]
-    target = state["target_number"]
+    target = state["target"]
     
     if latest_guess < target:
         state["hint"] = f"The number {latest_guess} is too low. Try higher!"
@@ -91,6 +91,10 @@ graph.add_conditional_edges(
 graph.set_entry_point("setup")
 
 app = graph.compile()
+
+png_data = app.get_graph().draw_mermaid_png()
+image = Image.open(io.BytesIO(png_data))
+image.show()
 
 app.invoke({'name' : "Elias", 'guesses' : [], 'attempts' : 0, 'lower_bound' : 1, 'upper_bound' : 20})
 
