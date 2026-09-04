@@ -1,9 +1,8 @@
 import io
 import random
-import stat
 from PIL import Image
-from typing import TypedDict, Dict, List
-from langgraph.graph import StateGraph, START, END
+from typing import TypedDict, List
+from langgraph.graph import StateGraph, END
 
 class AgentState(TypedDict):
     name : str
@@ -23,8 +22,6 @@ def random_num_node(state : AgentState) ->AgentState:
         'randNum' : state['randNums'] + [random.randint(0,10)],
         'counter' : state["counter"] + 1
     }
-
-    
 
 def should_continue(state : AgentState) -> AgentState:
     """ This will determine if graph should continue or not """
