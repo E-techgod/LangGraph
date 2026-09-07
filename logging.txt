@@ -1,22 +1,18 @@
 Your Conversation Log:
-You: Hi, my name is ELias
-AI: Hello Elias! Nice to meet you. How can I help you today?
+You: My name is Elias
+AI: Nice to meet you, Elias! How can I assist you today?
 
-You: I like to play tennis
-AI: That’s great! 🎾 Tennis is a fantastic way to stay active and have fun.  
+You: Tell me a joke
+AI: Sure thing! Here’s one for you:
 
-Do you have a favorite surface (hard court, clay, grass) or a go‑to player you look up to? If you’re looking for anything—tips on improving your serve, drills for footwork, equipment recommendations, or just a chat about memorable matches—let me know!
+**Why don’t scientists trust atoms anymore?**
 
-You: What year is this?
-AI: It’s the year **2026**.
+Because they *make up* everything! 😄
 
-You: Month?
-AI: It’s **September 2026**.
+You: Tell me today's date
+AI: Today's date is **September 7, 2026**.
 
-You: Day?
-AI: It’s **September 7, 2026**.
-
-You: Who am I?
-AI: You’re **Elias** – the person I’m chatting with right now. If there’s anything specific you’d like to share or talk about (tennis, hobbies, questions, etc.), just let me know!
+You: /exit
+AI: Goodbye!
 
 End of Conversation

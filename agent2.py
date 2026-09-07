@@ -23,6 +23,8 @@ def process_node(state : AgentState) -> AgentState: # Create the first node
     state['messages'].append(AIMessage(content = response.content)) # .content retieves only the important part of the answer, not the whole process
     print(f"\nAI: {response.content}")
 
+    print("CURRENT STAE: ", state['messages'])
+
     return state
 
 graph = StateGraph(AgentState)
