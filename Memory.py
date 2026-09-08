@@ -7,6 +7,8 @@ from langchain_core.messages import HumanMessage, AIMessage
 
 load_dotenv() # Function to load the key
 
+CONTEXT_WINDOW = 5 # Number of complete user + AI exchanges to remember
+
 llm = ChatGroq( # Loads the actual model we're trying to use 
     model = "openai/gpt-oss-120b",
     temperature = 0.0,
@@ -33,19 +35,26 @@ graph.add_edge(START, "process")
 graph.add_edge("process", END)
 agent = graph.compile()
 
-conversation_history = [] # This is where we'll store the conversation 
+conversation_history = [] # Only the messages the agent currently remembers
+conversation_log = [] # The complete conversation, used for logging
 
 user_input = input("Enter: ")
 while user_input != "exit":
-    conversation_history.append(HumanMessage(content=user_input))
+    human_message = HumanMessage(content=user_input)
+    conversation_history.append(human_message)
+    conversation_log.append(human_message)
+
+    # Leave room for the AI response so the completed context stays at 5 pairs.
+    conversation_history = conversation_history[-(CONTEXT_WINDOW * 2 - 1):]
     result = agent.invoke({"messages": conversation_history})
-    conversation_history = result["messages"]
+    conversation_history = result["messages"][-(CONTEXT_WINDOW * 2):]
+    conversation_log.append(conversation_history[-1])
     user_input = input("Enter: ")
 
 with open("logging.txt", "w") as file:
     file.write("Your Conversation Log:\n")
     
-    for message in conversation_history:
+    for message in conversation_log:
         if isinstance(message, HumanMessage):
             file.write(f"You: {message.content}\n")
         elif isinstance(message, AIMessage):
