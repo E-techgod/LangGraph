@@ -84,7 +84,7 @@ def our_agent_node(state : AgentState) -> AgentState:
 
     print(f"\n🤖 AI: {response.content}")
     if hasattr(response, "tool_calls") and response.tool_calls:
-        print(f"🔧 USING TOOLS: {[tc['name'] for tc in response.tool_calls]}")
+        print(f"🔧 USING TOOLS: {[tc['name'] for tc in response.tool_calls]}\n")
 
     return {'messages' : list(state['messages']) + [user_message, response]}
 
@@ -112,7 +112,7 @@ def print_messages(messages):
     
     for message in messages[-3:]:
         if isinstance(message, ToolMessage):
-            print(f"\🔧 TOOL RESULT: {message.content}")
+            print(f"\n🔧 TOOL RESULT: {message.content}")
 
 graph = StateGraph(AgentState)
 
