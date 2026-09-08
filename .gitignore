@@ -1,4 +1,15 @@
-.env
-Stock_Market_Performance_2024.pdf
+# Python cache
+__pycache__/
+*.pyc
 eca33cd7-f5b0-4860-a61f-3ee9628efbdb/
-chroma.sqlite3
+venv/
+
+# Chroma DB artifacts
+*.sqlite3
+chroma/
+
+# Local PDF documents
+*.pdf
+
+# Secrets
+.env
