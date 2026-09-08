@@ -1,4 +1,5 @@
 import os
+from sre_parse import State
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.tools import tool
@@ -7,6 +8,7 @@ from langgraph.graph import StateGraph, END
 from langchain_core.messages import BaseMessage # The foundational class for all message types in LangGraph 
 from langchain_core.messages import ToolMessage # Passes data back to LLM after it calls a tool such as the content and tool_call_id
 from langchain_core.messages import SystemMessage # Message for providing instructions to the LLM 
+from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.graph.message import add_messages # Allows to append all messages to the state without overriding any of it 
 from typing import TypedDict, Annotated, Sequence
 
@@ -14,3 +16,84 @@ load_dotenv()
 
 # This is the global variable to store document content 
 document_content = ""
+
+# injected State - NEyond this course STILL NEED TO LEARN WHAT IS AND HOW TO USE IT
+
+class AgentState(TypedDict):
+    messages : Annotated[Sequence[BaseMessage], add_messages]
+
+@tool
+def update(content : str) -> str: # This parameters will get provided by the LLm in the background
+    """ Update the document with the provided content """
+    global document_content
+    document_content = content
+    return {f"Document has been updated successfully! the current content is:\n{document_content}"}
+
+@tool
+def save(filename : str) -> str:
+    """ Save the current document to a text file and finisht he process.
+    
+    Args:
+        filename: Name for the text file
+    """
+
+    if not filename.endswith('.txt'):
+        filename = f"{filename}.txt"
+
+    try: 
+            with open(filename, 'w') as file: 
+                file.write(document_content)
+            print(f"\nDocument has been saved to: {filename}")
+            return f"Document has been saved successfully to '{filename}'."
+    except Exception as e:
+         return f"Error saving document: {str(e)}"
+
+
+our_tools = [update, save]
+
+llm = ChatGroq(
+    model = "openai/gpt-oss-120b",
+    temperature= 0.0,
+    groq_api_key = os.getenv("GROQ_API_KEY")
+)
+
+model = llm.bind_tools(our_tools)
+
+def our_agent(state : AgentState) -> AgentState:
+    system_prompt = SystemMessage(content=f"""
+    You are Drafter, a helpful writing assistant. You are going to help the user update and modify documents.
+    
+    - If the user wants to update or modify content, use the 'update' tool with the complete updated content.
+    - If the user wants to save and finish, you need to use the 'save' tool.
+    - Make sure to always show the current document state after modifications.
+    
+    The current document content is:{document_content}
+    """)
+
+    if not state['messages']:
+        user_input = "I'm ready to help you update a document. What would you like to create?"
+        user_message = HumanMessage(content = user_input)
+
+    else: 
+        user_input = input("\nWhat would you like to do with the document? ")
+        print(f"\n👤 USER: {user_input}")
+        user_message = HumanMessage(content = user_input)
+
+    all_messages = [system_prompt] + list(state['messages']) + user_message
+
+    response = model.invoke(all_messages)
+
+    print(f"\n🤖 AI: {response.content}")
+    if hasattr(response, "tool_calls") and response.tool_calls:
+        print(f"🔧 USING TOOLS: {[tc['name'] for tc in response.tool_calls]}")
+
+    return {'messages' : list(state['messages']) + [user_message, response]}
+
+def should_continue(state : AgentState):
+    """ Determine if we should continue or end the conversation  """ 
+    messages = state['messages']
+
+    if not messages:
+        return "continue"
+
+    
