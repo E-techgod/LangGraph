@@ -60,6 +60,7 @@ def should_continue(state : AgentState): # This is not a node, this will guide t
 
 
 graph = StateGraph(AgentState)
+
 graph.add_node("our_agent", agent_node)
 
 tool_node = ToolNode(tools=our_tools) # Tool that contans all the necessary tools 
