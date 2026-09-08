@@ -97,5 +97,5 @@ def print_stream(stream):
         else:
             message.pretty_print()
 
-inputs = {'messages' : [("user", "Add 40 + 12. Add 3 +4. Multiply 3*4. Subtract 20-2. Tell me a joke.")]}
+inputs = {'messages' : [("user", "Add 40 + 12 and then multiply the result by 6. Also tell me a joke please")]}
 print_stream(agent.stream(inputs, stream_mode="values"))
