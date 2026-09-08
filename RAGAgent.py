@@ -32,7 +32,7 @@ from langchain_chroma import Chroma
 load_dotenv()
 
 llm = ChatGroq(
-    model = "",
+    model = "openai/gpt-oss-120b",
     temperature = 0,
     groq_api_key = os.getenv("GROQ_API_KEY")
 )
@@ -137,7 +137,7 @@ def call_llm_node(state : AgentState) -> AgentState:
     messages = list(state['messages'])
     messages = [SystemMessage(content=system_prompt)] + messages
     message = llm.invoke(messages)
-    return {'messages' : ['message']}
+    return {'messages' : [message]}
 
 # Retriever Agent
 def take_action_node(state: AgentState) -> AgentState:
@@ -197,5 +197,5 @@ def running_agent():
         print("\n=== ANSWER ===")
         print(results['messages'][-1].content)
 
-if __name__ == "__main___":
+if __name__ == "__main__":
     running_agent()
