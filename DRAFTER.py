@@ -78,7 +78,7 @@ def our_agent_node(state : AgentState) -> AgentState:
         print(f"\n👤 USER: {user_input}")
         user_message = HumanMessage(content = user_input)
 
-    all_messages = [system_prompt] + list(state['messages']) + user_message
+    all_messages = [system_prompt] + list(state["messages"]) + [user_message]
 
     response = model.invoke(all_messages)
 
@@ -136,11 +136,14 @@ agent = graph.compile()
 
 def run_document_agent():
     print("\n ===== DRAFTER =====")
-
-    state = {'messages' : []}
-
+    
+    state = {"messages": []}
+    
     for step in agent.stream(state, stream_mode="values"):
         if "messages" in step:
             print_messages(step["messages"])
-            
+    
     print("\n ===== DRAFTER FINISHED =====")
+
+if __name__ == "__main__":
+    run_document_agent()
